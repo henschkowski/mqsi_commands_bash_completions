@@ -52,4 +52,5 @@ complete -o nospace -F _mqsilist_completions mqsistartmsgflow
 complete -o default -o nospace -F _mqsilist_completions_running_eg mqsireportproperties
 complete -o nospace -F _mqsilist_completions mqsicreateexecutiongroup
 complete -o nospace -F _mqsilist_completions mqsideleteexecutiongroup
+complete -o nospace -F _mqsilist_completions_running_eg mqsireportflowmonitoring
 
