@@ -158,9 +158,13 @@ _mqsilist_completions()
     elif [[ "$prev" = '-e'  ]]; then
         local broker="${COMP_WORDS[1]}"
         egs=""
-        for l in $(echo 'cat /table/row/@ExecGroupLabel' | xmllint --shell $MQSI_WORKPATH/components/${broker}/repository/brokeraaeg.dat | awk -F\" 'NR % 2 == 0 { print $2; }' ) ; do
-            egs=$(echo $l | base64 -d)$'\n'${egs};
-        done
+        if [[ $MQSI_VERSION_V -lt 11 ]]; then
+            for l in $(echo 'cat /table/row/@ExecGroupLabel' | xmllint --shell $MQSI_WORKPATH/components/${broker}/repository/brokeraaeg.dat | awk -F\" 'NR % 2 == 0 { print $2; }' ) ; do
+                egs=$(echo $l | base64 -d)$'\n'${egs};
+            done
+        else
+            egs=$(ls -1 $MQSI_WORKPATH/components/${broker}/servers)
+        fi
         COMPREPLY=($(compgen -W "$egs" -- "$cur"))
         return
     else
@@ -172,11 +176,13 @@ _mqsilist_completions()
 
 complete -o nospace -F _mqsilist_completions_running_eg mqsilist
 complete -o nospace -F _mqsilist_completions_running_eg mqsistop
+complete -o nospace -F _mqsilist_completions_running_eg mqsideploy
 complete -o nospace -F _mqsilist_completions mqsistart
 complete -o nospace -F _mqsilist_completions_running_eg mqsireload
 complete -o nospace -F _mqsilist_completions_running_eg mqsistopmsgflow
 complete -o nospace -F _mqsilist_completions mqsistartmsgflow
 complete -o default -o nospace -F _mqsilist_completions_running_eg mqsireportproperties
+complete -o default -o nospace -F _mqsilist_completions_running_eg mqsichangeproperties
 complete -o nospace -F _mqsilist_completions mqsicreateexecutiongroup
 complete -o nospace -F _mqsilist_completions mqsideleteexecutiongroup
 complete -o nospace -F _mqsilist_completions_running_eg mqsireportflowmonitoring
