@@ -174,7 +174,7 @@ _mqsilist_completions()
 }
 
 
-complete -o nospace -F _mqsilist_completions_running_eg mqsilist
+complete -o nospace -F _mqsilist_completions mqsilist
 complete -o nospace -F _mqsilist_completions_running_eg mqsistop
 complete -o nospace -F _mqsilist_completions_running_eg mqsideploy
 complete -o nospace -F _mqsilist_completions mqsistart
